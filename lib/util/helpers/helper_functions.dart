@@ -52,4 +52,42 @@ class SHelperFunctions {
   static double screenWidth() {
     return MediaQuery.of(Get.context!).size.width;
   }
+
+  static bool isEmailValid({required String email}) {
+    /// Regular expression for validating email addresses
+    final RegExp emailRegex = RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+      caseSensitive: false,
+      multiLine: false,
+    );
+
+    /// Check if the email matches the regex
+    return emailRegex.hasMatch(email);
+  }
+
+  static OverlayEntry? overlayEntry;
+
+  static void showProgressIndicator(BuildContext context) {
+    overlayEntry = OverlayEntry(
+      builder: (BuildContext context) => Stack(
+        children: <Widget>[
+          Container(
+            color: Colors.black.withOpacity(0.5),
+          ),
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ],
+      ),
+    );
+
+    Overlay.of(context).insert(overlayEntry!);
+  }
+
+  static void hideProgressIndicator() {
+    if (overlayEntry != null) {
+      overlayEntry?.remove();
+      overlayEntry = null;
+    }
+  }
 }

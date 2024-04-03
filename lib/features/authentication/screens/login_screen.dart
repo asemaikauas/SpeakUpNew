@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:speakup/features/authentication/controllers/login_controller.dart';
 import 'package:speakup/features/authentication/screens/signup_screen.dart';
-import 'package:speakup/features/speakup/screens/map_screen.dart';
 import 'package:speakup/util/constants/sizes.dart';
 import 'package:speakup/util/device/device_utility.dart';
 
@@ -14,6 +14,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LoginController loginCtrl = Get.put(LoginController());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -42,10 +43,13 @@ class LoginScreen extends StatelessWidget {
                     height: SDeviceUtils.getScreenHeight(context) * .1,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(hintText: "Электронная почта "),
+                    controller: loginCtrl.email,
+                    decoration:
+                        const InputDecoration(hintText: "Электронная почта "),
                   ),
                   const SizedBox(height: SSizes.spaceBtwInputFields),
                   TextFormField(
+                    controller: loginCtrl.password,
                     decoration: const InputDecoration(
                         hintText: "Пароль",
                         prefixIcon: Icon(Icons.lock_outline)),
@@ -54,9 +58,11 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(
                       width: SDeviceUtils.getScreenWidth(context) * .8,
                       child: ElevatedButton(
-                          onPressed: () {
-                            Get.to(() => const MapScreen());
-                          },
+                          onPressed: () => loginCtrl.login(
+                                context,
+                                email: loginCtrl.email.text.toString(),
+                                password: loginCtrl.email.text.toString(),
+                              ),
                           child: const Text("LOG IN"))),
                   const SizedBox(height: SSizes.spaceBtwSections / 2),
                   Row(
