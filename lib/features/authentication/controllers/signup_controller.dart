@@ -3,4 +3,5 @@ import 'package:get/get.dart';
 
 class SignUpController extends GetxController {
   final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
 }
