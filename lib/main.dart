@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:speakup/features/authentication/screens/login_screen.dart';
 import 'package:speakup/features/speakup/screens/home_screen.dart';
+import 'package:speakup/features/speakup/screens/map_screen.dart';
 import 'package:speakup/firebase_options.dart';
 import 'package:speakup/util/helpers/firebase_hepler.dart';
 import 'package:speakup/util/theme/theme.dart';
@@ -27,7 +28,8 @@ class SpeakUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: STheme.sTheme,
-      home: SFireHelper.fireAuth.currentUser != null
+      home:
+      SFireHelper.fireAuth.currentUser != null
           ?  HomeScreen()
           : const LoginScreen(),
     );

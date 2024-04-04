@@ -32,9 +32,7 @@ class SpeechController extends GetxController {
       } else {
         _isListening.value = false;
         speech.stop();
-        Get.to(MapScreen(
-          text: listenText.value,
-        ));
+
       }
     }
   }

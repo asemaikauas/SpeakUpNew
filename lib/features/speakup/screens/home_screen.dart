@@ -58,7 +58,6 @@ class HomeScreen extends StatelessWidget {
               ),
               iconSize: 100,
               onPressed: () {
-                speechController.isListening = !speechController.isListening;
                 speechController.listen();
               },
               style: IconButton.styleFrom(

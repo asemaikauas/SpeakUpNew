@@ -21,6 +21,8 @@
         android:label="speakup"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAkp_OWQegHN6Tqiie16jjSGKvJE1Cfu3I"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
