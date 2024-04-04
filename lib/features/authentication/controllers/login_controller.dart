@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:speakup/features/speakup/screens/home_screen.dart';
+import 'package:speakup/util/helpers/firebase_hepler.dart';
 import 'package:speakup/util/helpers/helper_functions.dart';
 
 class LoginController extends GetxController {
@@ -8,7 +12,7 @@ class LoginController extends GetxController {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
 
-  /// LoginUp & Fields Validations
+  /// LoginUp & Fields Validations Function
   void login(
     context, {
     required String email,
@@ -30,7 +34,7 @@ class LoginController extends GetxController {
       {required String email, required String password}) async {
     SHelperFunctions.showProgressIndicator(context);
     try {
-      final credential = await FirebaseAuth.instance
+      await SFireHelper.fireAuth
           .signInWithEmailAndPassword(email: email, password: password)
           .onError((error, stackTrace) {
         SHelperFunctions.hideProgressIndicator();
@@ -38,17 +42,16 @@ class LoginController extends GetxController {
         throw error as Object;
       }).then((value) {
         SHelperFunctions.hideProgressIndicator();
-        SHelperFunctions.showSnackBar('User Successfully Login');
+        SHelperFunctions.showSnackBar('Successfully Login');
+        Get.offAll(() => const HomeScreen());
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         SHelperFunctions.hideProgressIndicator();
         SHelperFunctions.showSnackBar('No user found for that email.');
-        // print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         SHelperFunctions.hideProgressIndicator();
         SHelperFunctions.showSnackBar('Wrong password provided for that user.');
-        // print('Wrong password provided for that user.');
       }
     } catch (e) {
       SHelperFunctions.hideProgressIndicator();

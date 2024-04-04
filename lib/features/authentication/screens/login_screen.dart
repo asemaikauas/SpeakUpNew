@@ -61,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                           onPressed: () => loginCtrl.login(
                                 context,
                                 email: loginCtrl.email.text.toString(),
-                                password: loginCtrl.email.text.toString(),
+                                password: loginCtrl.password.text.toString(),
                               ),
                           child: const Text("LOG IN"))),
                   const SizedBox(height: SSizes.spaceBtwSections / 2),

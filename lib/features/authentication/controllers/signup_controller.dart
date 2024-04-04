@@ -21,7 +21,7 @@ class SignUpController extends GetxController {
   RxString imageFilePath = ''.obs;
   RxString imageUrl = ''.obs;
 
-  /// SignUp & Fields Validations
+  /// Fields Validations Function
   void signUp(BuildContext context,
       {required String fullName,
       required String image,
@@ -35,16 +35,29 @@ class SignUpController extends GetxController {
           rePassword.isNotEmpty) {
         if (SHelperFunctions.isEmailValid(email: email)) {
           if (password == rePassword) {
+            ///Call SignUp User Function
             signUpUser(context, email: email, password: password)
                 .then((value) async {
-              await uploadImageGetLink(image: image).then((value) {
-                final user = UserModel(
-                    userId: SFireHelper.fireAuth.currentUser!.uid,
-                    username: fullName,
-                    email: email,
-                    password: password,
-                    imageUrl: imageUrl.value);
-              });
+              try {
+                /// Call Upload Image & Get Url Function
+                await uploadImageGetLink(image: image).then((value) async {
+                  /// Pass Data to UserModel
+                  final UserModel user = UserModel(
+                      userId: SFireHelper.fireAuth.currentUser!.uid,
+                      username: fullName,
+                      email: email,
+                      password: password,
+                      imageUrl: imageUrl.value);
+
+                  /// Call Upload User data
+                  await uploadUserData(user).then((value) {
+                    SHelperFunctions.hideProgressIndicator();
+                  });
+                });
+              } catch (e) {
+                SHelperFunctions.showSnackBar(
+                    'Error occurred while uploading to Firebase Storage. $e');
+              }
             });
           } else {
             SHelperFunctions.showSnackBar(
@@ -61,36 +74,34 @@ class SignUpController extends GetxController {
     }
   }
 
-  /// Upload User To FireStore
-  uploadUserData(UserModel user) async {
+  /// Upload User To FireStore Function
+  Future<void> uploadUserData(UserModel user) async {
     try {
       await SFireHelper.fireStore
           .collection("Users")
           .doc(SFireHelper.fireAuth.currentUser!.uid)
           .set(user.toJson());
     } catch (e) {
-      print(e);
+      SHelperFunctions.hideProgressIndicator();
+      SHelperFunctions.showSnackBar("Uploading $e");
     }
   }
 
   /// User SignUp WithMail & Password Function
-  Future<void> signUpUser(BuildContext context,
-      {required String email, required String password}) async {
+  Future<void> signUpUser(
+    BuildContext context, {
+    required String email,
+    required String password,
+  }) async {
     SHelperFunctions.showProgressIndicator(context);
     try {
-      final credential = await SFireHelper.fireAuth
-          .createUserWithEmailAndPassword(
+      await SFireHelper.fireAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
-      )
-          .then((value) {
-        SHelperFunctions.hideProgressIndicator();
-        SHelperFunctions.showSnackBar('User Successfully SignUp');
-      });
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         SHelperFunctions.hideProgressIndicator();
-
         SHelperFunctions.showSnackBar('The password provided is too weak.');
         // print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
@@ -105,6 +116,7 @@ class SignUpController extends GetxController {
     }
   }
 
+  /// Upload Image to Firebase Storage Function
   Future<void> uploadImageGetLink({required String image}) async {
     try {
       String fileName =
@@ -113,17 +125,21 @@ class SignUpController extends GetxController {
           .ref(fileName)
           .putFile(File(image))
           .then((value) async {
-        final String url =
-            await FirebaseStorage.instance.ref(fileName).getDownloadURL();
-        imageUrl.value = url;
+        await FirebaseStorage.instance
+            .ref(fileName)
+            .getDownloadURL()
+            .then((value) {
+          imageUrl.value = value;
+        });
       });
-      print('Upload successful');
     } catch (e) {
-      print('Error occurred while uploading to Firebase Storage. $e');
+      SHelperFunctions.hideProgressIndicator();
+      SHelperFunctions.showSnackBar(
+          'Error occurred while uploading to Firebase Storage. $e');
     }
   }
 
-  ///Image Picker
+  ///Image Picker Function
   Future<String> imagePicker(ImageSource imageSource) async {
     ImagePicker picker = ImagePicker();
     XFile? xFile = await picker.pickImage(source: imageSource);
@@ -156,9 +172,8 @@ class SignUpController extends GetxController {
     }
   }
 
-  /// Image Picker
+  /// Image Picker bottom Sheet Function
   Future<String> imagePickerBottomSheet(BuildContext context) async {
-    print("here");
     String? imagePath = await showModalBottomSheet<String>(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -256,7 +271,6 @@ class SignUpController extends GetxController {
         );
       },
     );
-    print(imagePath);
     return imagePath ?? "";
   }
 }

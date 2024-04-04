@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDfM_-ygzxl7TYOyU4stIyDXHjaCQAEpoA',
-    appId: '1:595520693970:android:0221d291ede74f0803ef0b',
+    appId: '1:595520693970:android:77bf8c2687b7e6e503ef0b',
     messagingSenderId: '595520693970',
     projectId: 'speak-up-9dae0',
     storageBucket: 'speak-up-9dae0.appspot.com',
@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAkaDhGfp8xYFK95YWgAyFizjgvLGkNWqk',
-    appId: '1:595520693970:ios:71d82b249684f80703ef0b',
+    appId: '1:595520693970:ios:7263560058db608c03ef0b',
     messagingSenderId: '595520693970',
     projectId: 'speak-up-9dae0',
     storageBucket: 'speak-up-9dae0.appspot.com',
