@@ -1,0 +1,56 @@
+import 'package:get/get.dart';
+import 'package:speakup/features/speakup/screens/map_screen.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+
+class SpeechController extends GetxController{
+
+  late stt.SpeechToText speech;
+  final RxBool _isListening = false.obs;
+  final RxString _text = ''.obs;
+  void listen() async {
+    if (!_isListening.value) {
+      bool available = await speech.initialize(
+        onStatus: (status) {
+          print('onStatus: $status');
+        },
+        onError: (error) {
+          print('onError: $error');
+        },
+      );
+      if (available) {
+        _isListening.value = true;
+        speech.listen(
+            onResult: (result) {
+              _text.value = result.recognizedWords;
+              print(_text.value);
+            }
+
+        );
+      }
+      else {
+        _isListening.value = false;
+        speech.stop();
+        Get.to(const MapScreen());
+      }
+    }
+  }
+@override
+  void onInit() {
+    // TODO: implement onInit
+  speech = stt.SpeechToText();
+
+  super.onInit();
+  }
+
+  String get text => _text.value;
+
+  set text(String value) {
+    _text.value = value;
+  }
+
+  bool get isListening => _isListening.value;
+
+  set isListening(bool value) {
+    _isListening.value = value;
+  }
+}

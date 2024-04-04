@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:speakup/features/speakup/models/user_model.dart';
+import 'package:speakup/features/speakup/screens/home_screen.dart';
 import 'package:speakup/util/helpers/firebase_hepler.dart';
 import 'package:speakup/util/helpers/helper_functions.dart';
 
@@ -52,6 +53,7 @@ class SignUpController extends GetxController {
                   /// Call Upload User data
                   await uploadUserData(user).then((value) {
                     SHelperFunctions.hideProgressIndicator();
+                    Get.offAll(HomeScreen());
                   });
                 });
               } catch (e) {

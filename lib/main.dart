@@ -28,7 +28,7 @@ class SpeakUp extends StatelessWidget {
     return GetMaterialApp(
       theme: STheme.sTheme,
       home: SFireHelper.fireAuth.currentUser != null
-          ? const HomeScreen()
+          ?  HomeScreen()
           : const LoginScreen(),
     );
   }

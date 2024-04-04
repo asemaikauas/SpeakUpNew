@@ -43,7 +43,7 @@ class LoginController extends GetxController {
       }).then((value) {
         SHelperFunctions.hideProgressIndicator();
         SHelperFunctions.showSnackBar('Successfully Login');
-        Get.offAll(() => const HomeScreen());
+        Get.offAll(() =>  HomeScreen());
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
