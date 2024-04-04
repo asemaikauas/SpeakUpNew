@@ -6,12 +6,15 @@ import 'package:speakup/util/constants/sizes.dart';
 class MapScreen extends StatelessWidget {
   const MapScreen({
     super.key,
+    required this.text,
   });
+
+  final String text;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SAppBar(
+      appBar: const SAppBar(
         title: "Логопедические  центры",
       ),
       body: SingleChildScrollView(
@@ -23,17 +26,8 @@ class MapScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(SImages.gMap),
-                Text("Алмата:"),
-                Text("ldjbv"),
-                Text("Алмата:"),
-                Text("sjbjl"),
-                Text("sljbljsb"),
-                Text("slkbnslk"),
-                SizedBox(height: SSizes.spaceBtwItems),
-                Text("Астана:"),
-                Text("ldkbn"),
-                Text("sljbvls"),
-                Text("slfkbnlb"),
+                const SizedBox(height: 50),
+                Text(text),
               ],
             ),
           ),

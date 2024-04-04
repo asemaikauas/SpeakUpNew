@@ -9,6 +9,9 @@ class STheme {
   static ThemeData sTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+    ),
     scaffoldBackgroundColor: const Color(0xFFE2E9F3),
     elevatedButtonTheme: SElevatedButtonTheme.lightElevatedButtonTheme,
     inputDecorationTheme: STextFormFieldTheme.lightInputDecorationTheme,

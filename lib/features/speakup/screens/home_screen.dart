@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:speakup/common/widgets/appbar.dart';
-import 'package:speakup/features/speakup/controller/speech_controller.dart';
+import 'package:speakup/features/speakup/controllers/speech_controller.dart';
 import 'package:speakup/util/constants/image_strings.dart';
 import 'package:speakup/util/constants/sizes.dart';
 import 'package:speakup/util/device/device_utility.dart';
@@ -47,10 +47,7 @@ class HomeScreen extends StatelessWidget {
             Obx(() {
               return Text(
                 speechController.isListening ? "Слушаю... " : "",
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleLarge,
+                style: Theme.of(context).textTheme.titleLarge,
               );
             }),
             const SizedBox(height: SSizes.spaceBtwSections),
@@ -61,7 +58,7 @@ class HomeScreen extends StatelessWidget {
               ),
               iconSize: 100,
               onPressed: () {
-                speechController.isListening=!speechController.isListening;
+                speechController.isListening = !speechController.isListening;
                 speechController.listen();
               },
               style: IconButton.styleFrom(
