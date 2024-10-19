@@ -45,10 +45,10 @@ class SignUpController extends GetxController {
                   /// Pass Data to UserModel
                   final UserModel user = UserModel(
                       userId: SFireHelper.fireAuth.currentUser!.uid,
-                      username: fullName,
+                      displayName: fullName,
                       email: email,
                       password: password,
-                      imageUrl: imageUrl.value);
+                      photoURL: imageUrl.value);
 
                   /// Call Upload User data
                   await uploadUserData(user).then((value) {
@@ -83,6 +83,12 @@ class SignUpController extends GetxController {
           .collection("Users")
           .doc(SFireHelper.fireAuth.currentUser!.uid)
           .set(user.toJson());
+
+      await SFireHelper.fireStore
+          .collection("Users")
+          .doc(SFireHelper.fireAuth.currentUser!.uid)
+          .set(user.toJson());
+      print('User document created'); // Add this line
     } catch (e) {
       SHelperFunctions.hideProgressIndicator();
       SHelperFunctions.showSnackBar("Uploading $e");
@@ -133,6 +139,13 @@ class SignUpController extends GetxController {
             .then((value) {
           imageUrl.value = value;
         });
+      });
+      await FirebaseStorage.instance
+          .ref(fileName)
+          .getDownloadURL()
+          .then((value) {
+        imageUrl.value = value;
+        print('Image URL: $value'); // Add this line
       });
     } catch (e) {
       SHelperFunctions.hideProgressIndicator();

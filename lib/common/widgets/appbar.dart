@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:speakup/util/constants/sizes.dart';
 import 'package:speakup/util/device/device_utility.dart';
+import 'package:speakup/features/authentication/screens/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SAppBar({
     super.key,
     required this.title,
+    required this.page,
   });
 
   final String title;
-
+  final String page;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -41,6 +44,17 @@ class SAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ],
         ),
+        actions: page == 'Profile'
+            ? <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Get.offAll(LoginScreen());
+                  },
+                ),
+              ]
+            : null,
         iconTheme: IconThemeData());
   }
 

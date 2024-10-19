@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDfM_-ygzxl7TYOyU4stIyDXHjaCQAEpoA',
-    appId: '1:595520693970:android:77bf8c2687b7e6e503ef0b',
-    messagingSenderId: '595520693970',
-    projectId: 'speak-up-9dae0',
-    storageBucket: 'speak-up-9dae0.appspot.com',
+    apiKey: 'AIzaSyDN2tkNHKSyVHuY4brBBgzQ6ugPSMdJyBU',
+    appId: '1:601989672659:android:8af94b78bea207c509ae26',
+    messagingSenderId: '601989672659',
+    projectId: 'speakup-82af7',
+    storageBucket: 'speakup-82af7.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAkaDhGfp8xYFK95YWgAyFizjgvLGkNWqk',
-    appId: '1:595520693970:ios:7263560058db608c03ef0b',
-    messagingSenderId: '595520693970',
-    projectId: 'speak-up-9dae0',
-    storageBucket: 'speak-up-9dae0.appspot.com',
+    apiKey: 'AIzaSyCLB8xDRI4SnT8UtZFfSqHkbu-bmd9aFjI',
+    appId: '1:601989672659:ios:43a3295b84a67f1f09ae26',
+    messagingSenderId: '601989672659',
+    projectId: 'speakup-82af7',
+    storageBucket: 'speakup-82af7.appspot.com',
     iosBundleId: 'com.devoasis.speakup',
   );
+
 }

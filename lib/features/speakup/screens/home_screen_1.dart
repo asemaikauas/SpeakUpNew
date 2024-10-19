@@ -1,24 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:speakup/common/widgets/appbar.dart';
+import 'package:speakup/features/speakup/controllers/speech_controller.dart';
+import 'package:speakup/features/speakup/screens/map_screen.dart';
+import 'package:speakup/util/constants/image_strings.dart';
 import 'package:speakup/util/constants/sizes.dart';
 import 'package:speakup/util/device/device_utility.dart';
 
 import '../../../util/constants/colors.dart';
 
 class HomeScreen1 extends StatelessWidget {
-  const HomeScreen1({
+  HomeScreen1({
     super.key,
   });
+  final SpeechController speechController = Get.find<SpeechController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const SAppBar(
-        title: "SpeakUP AI Валли",
+        page: "Home",
+        title: "SpeakUP AI Чат",
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.arrow_forward),
+        onPressed: () {
+          Get.to(const MapScreen(text: ""));
+        },
       ),
       body: const SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(SSizes.defaultSpace),
+          child: SizedBox(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [],
+            ),
+          ),
         ),
       ),
       bottomSheet: Container(
@@ -32,10 +51,12 @@ class HomeScreen1 extends StatelessWidget {
         width: SDeviceUtils.getScreenWidth(context),
         child: Column(
           children: [
-            Text(
-              "Слушаю... ",
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            Obx(() {
+              return Text(
+                speechController.isListening ? "Слушаю... " : "",
+                style: Theme.of(context).textTheme.titleLarge,
+              );
+            }),
             const SizedBox(height: SSizes.spaceBtwSections),
             IconButton(
               icon: const Icon(
@@ -43,7 +64,9 @@ class HomeScreen1 extends StatelessWidget {
                 color: Colors.white,
               ),
               iconSize: 100,
-              onPressed: () {},
+              onPressed: () {
+                speechController.listen(false);
+              },
               style: IconButton.styleFrom(
                 backgroundColor: SColors.primary,
               ),

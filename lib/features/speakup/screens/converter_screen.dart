@@ -10,17 +10,16 @@ import 'package:speakup/features/speakup/controllers/text_to_speech_controller.d
 import 'package:video_player/video_player.dart';
 import '../../../util/constants/colors.dart';
 import 'package:speakup/features/speakup/screens/home_screen.dart';
-import 'package:speakup/features/speakup/screens/converter_screen.dart';
 import 'package:speakup/features/speakup/screens/profile_page.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+class ConverterScreen extends StatefulWidget {
+  ConverterScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _ConverterScreenState createState() => _ConverterScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ConverterScreenState extends State<ConverterScreen> {
   final SpeechController speechController = Get.put(SpeechController());
   final TextToSpeechController textController =
       Get.put(TextToSpeechController());
@@ -29,11 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late final VideoPlayerController videoController;
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   void _onItemTapped(int index) {
-    textController.lastChatResponse = '';
     setState(() {
       _selectedIndex = index;
+      textController.lastChatResponse = '';
     });
     switch (index) {
       case 0:
@@ -88,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (speechController.isListening) {
       return 'Слушаю...';
     } else if (textController.isThinking) {
-      return 'Думаю...';
+      return 'Обрабатываю...';
     } else if (textController.lastChatResponse.isEmpty) {
       return '';
     } else {
@@ -132,8 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   SAppBar buildAppBar() {
     return const SAppBar(
-      page: "Home",
-      title: "Привет, я Спичи!",
+      page: "Converter",
+      title: "Конвертер",
     );
   }
 
@@ -250,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (textController.isThinking || textController.isSpeaking) {
                   return;
                 } else {
-                  speechController.listen(false);
+                  speechController.listen(true);
                   textController.lastChatResponse = '';
                   isListeningNotifier.value = speechController.isListening;
                 }

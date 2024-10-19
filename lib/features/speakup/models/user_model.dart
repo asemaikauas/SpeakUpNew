@@ -1,35 +1,35 @@
 class UserModel {
   String userId;
-  String username;
+  String displayName;
   String email;
   String password;
-  String imageUrl;
+  String photoURL;
 
   UserModel({
-    required this.username,
+    required this.displayName,
     required this.userId,
     required this.email,
     required this.password,
-    required this.imageUrl,
+    required this.photoURL,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      username: json['username'],
+      displayName: json['displayName'],
       email: json['email'],
       password: json['password'],
-      imageUrl: json['imageUrl'],
+      photoURL: json['photoURL'],
       userId: json['userId'],
     );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['username'] = username;
+    data['displayName'] = displayName;
     data['userId'] = userId;
     data['email'] = email;
     data['password'] = password;
-    data['imageUrl'] = imageUrl;
+    data['photoURL'] = photoURL;
     return data;
   }
 }

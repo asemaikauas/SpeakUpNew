@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "595520693970",
-    "project_id": "speak-up-9dae0",
-    "storage_bucket": "speak-up-9dae0.appspot.com"
+    "project_number": "601989672659",
+    "project_id": "speakup-82af7",
+    "storage_bucket": "speakup-82af7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:595520693970:android:77bf8c2687b7e6e503ef0b",
+        "mobilesdk_app_id": "1:601989672659:android:8af94b78bea207c509ae26",
         "android_client_info": {
           "package_name": "com.devoasis.speakup"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDfM_-ygzxl7TYOyU4stIyDXHjaCQAEpoA"
+          "current_key": "AIzaSyDN2tkNHKSyVHuY4brBBgzQ6ugPSMdJyBU"
         }
       ],
       "services": {

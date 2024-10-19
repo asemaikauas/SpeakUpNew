@@ -7,10 +7,17 @@ import 'package:speakup/util/device/device_utility.dart';
 
 import '../../../util/constants/colors.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({
     super.key,
   });
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +57,22 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: SSizes.spaceBtwInputFields),
                   TextFormField(
                     controller: loginCtrl.password,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                         hintText: "Пароль",
-                        prefixIcon: Icon(Icons.lock_outline)),
+                        prefixIcon: const Icon(Icons.lock_outline),
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureText ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
+                    ),
+                    obscureText: _obscureText,
                   ),
                   const SizedBox(height: SSizes.spaceBtwSections),
                   SizedBox(
