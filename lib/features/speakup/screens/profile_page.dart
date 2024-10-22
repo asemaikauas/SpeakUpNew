@@ -65,6 +65,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     if (user == null) {
       return Container();
     }
+
     return FutureBuilder<DocumentSnapshot>(
       future:
           FirebaseFirestore.instance.collection('Users').doc(user.uid).get(),
@@ -72,45 +73,73 @@ class _UserProfilePageState extends State<UserProfilePage> {
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            // Handle error
             return Text("Error: ${snapshot.error}");
           }
 
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-          String photoURL = data['photoURL'];
-          String displayName = data['displayName'];
+          // Handle null data safely
+          Map<String, dynamic>? data =
+              snapshot.data?.data() as Map<String, dynamic>?;
+          String? photoURL = data?['photoURL'];
+          String? displayName = data?['displayName'];
 
           return Scaffold(
             appBar: SAppBar(title: "Профиль", page: "Profile"),
-            body: Center(
+            body: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  if (photoURL != null)
+                  if (photoURL != null && photoURL.isNotEmpty)
                     CircleAvatar(
-                      radius: 100,
+                      radius: 80,
                       backgroundImage: NetworkImage(photoURL),
                     ),
-                  SizedBox(height: 10),
-                  if (displayName != null)
+                  const SizedBox(height: 20),
+                  if (displayName != null && displayName.isNotEmpty)
                     Text(
                       displayName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 22,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   if (user.email != null)
                     Text(
                       user.email!,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         color: Colors.black,
                       ),
+                      textAlign: TextAlign.center,
                     ),
+                  const Spacer(),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 3.0),
+                      child: ElevatedButton(
+                        onPressed: () => _confirmDeleteAccount(),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 3.0),
+                          child: Text(
+                            'Удалить аккаунт',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -130,6 +159,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
         } else {
           return Scaffold(
             appBar: SAppBar(title: "Профиль", page: "Profile"),
+            body: Center(
+                child: CircularProgressIndicator()), // Add loading spinner
             bottomNavigationBar: Container(
               height: 60,
               child: ListView(
@@ -146,5 +177,57 @@ class _UserProfilePageState extends State<UserProfilePage> {
         }
       },
     );
+  }
+
+  /// Confirmation dialog for account deletion
+  void _confirmDeleteAccount() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Подтвердите удаление'),
+          content: const Text(
+              'Вы уверены, что хотите удалить свой аккаунт? Это действие необратимо.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Отмена'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                _deleteAccount(); // Proceed with deletion
+              },
+              child: const Text('Удалить'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Function to delete user account
+  void _deleteAccount() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        // Delete user data from Firestore
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .delete();
+
+        // Delete user from Firebase Auth
+        await user.delete();
+
+        // Sign out and redirect to login screen
+        await FirebaseAuth.instance.signOut();
+        Get.offAll(LoginScreen());
+
+        Get.snackbar('Успех', 'Аккаунт успешно удален.');
+      } catch (e) {
+        Get.snackbar('Ошибка', 'Не удалось удалить аккаунт: $e');
+      }
+    }
   }
 }
